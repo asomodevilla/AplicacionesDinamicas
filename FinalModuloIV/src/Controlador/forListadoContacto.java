@@ -1,0 +1,62 @@
+package Controlador;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import Implementacion.ContactoDao;
+import Modelo.Contacto;
+
+
+/**
+ * Servlet implementation class forListadoContacto
+ */
+@WebServlet("/forListadoContacto")
+public class forListadoContacto extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public forListadoContacto() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+//		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		HttpSession sesion = request.getSession();
+		if (sesion.getAttribute("nombresesion")!=null)
+		{
+			ContactoDao condao = new ContactoDao();
+		List<Contacto> listacontacto = new ArrayList<Contacto>();
+		listacontacto = condao.obtenercontacto();
+		request.setAttribute("lcontacto", listacontacto);
+		request.getRequestDispatcher("listacontacto.jsp").forward(request, response);
+		
+		}
+		else
+		request.getRequestDispatcher("foringreso").forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
